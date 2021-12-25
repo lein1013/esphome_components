@@ -39,6 +39,35 @@
 See [1, page 20] for documentation of fields.
 
 [1] https://www.easymeter.com/downloads/products/zaehler/Q3D/Easymeter_Q3D_DE_2016-06-15.pdf
+
+Variant
+AS 1440
+/ABB5\@V9.21
+F.F(00000000)
+0.0.0(03224928)
+0.1.0(32)
+0.1.2*32(2112010000)
+...
+0.1.2*18(2010010000)
+1.8.1(052481.2*kWh)
+1.8.1*32(051967.9)
+...
+1.8.1*18(040911.4)
+2.8.1(033594.7*kWh)
+2.8.1*32(033578.7)
+...
+2.8.1*18(031870.4)
+0.9.1(221044)
+0.9.2(211222)
+32.7.0(231.9*V)
+52.7.0(232.0*V)
+72.7.0(232.0*V)
+C.6.0(001987)
+0.2.0(CE07)
+0.2.1(92116401)
+0.2.2(00000001)
+!
+
 */
 
 using namespace std;
@@ -46,7 +75,7 @@ using namespace std;
 namespace esphome {
 namespace obis {
 
-#define OBIS_BUFSIZE 512
+#define OBIS_BUFSIZE 1024
 
 class OBISChannel : public sensor::Sensor {
   friend class OBISBase;

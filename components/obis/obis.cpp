@@ -57,7 +57,8 @@ void OBISBase::handle_line(char *line) {
     ESP_LOGE(TAG, "handle_line() called with NULL pointer");
     return;
   }
-
+  ESP_LOGD(TAG, "received line: '%s'",line);
+  
   switch(line[0]) {
     case '\0': // ignore empty lines
     case '/':  // ignore introduction line

@@ -1,0 +1,46 @@
+external_components:
+  - source: github://jplitza/esphome_components
+
+logger:
+  baud_rate: 0
+  
+uart:
+  id: uart_bus
+  rx_pin: RX # orig: GPIO3
+  tx_pin: TX # not used
+  baud_rate: 300
+  data_bits: 7
+  parity: EVEN #ODD
+
+obis:
+  uart_id: uart_bus
+  force_update:  # optional
+    interval: 60000 # interval is in ms !
+    payload: "\x2F\x3F\x21\x0D\x0A" # /?!<CR><LF>
+
+sensor:
+  - platform: obis
+    channel: "1.8.1"
+    name: "Netz Energy Kauf"
+    unit_of_measurement: "kWh"
+    accuracy_decimals: 1
+    state_class: total_increasing
+    device_class: energy
+    #last_reset: none
+  - platform: obis
+    channel: "2.8.1"
+    name: "Netz Energy Verkauf"
+    unit_of_measurement: "kWh"
+    accuracy_decimals: 1
+    state_class: total_increasing
+    device_class: energy
+  - platform: obis
+    channel: "32.7.0"
+    name: "Netz Phase 1 Voltage"
+    unit_of_measurement: "V"
+    accuracy_decimals: 1
+  - platform: obis
+    channel: "52.7.0"
+    name: "Netz Phase 2 Voltage"
+    unit_of_measurement: "V"
+    accuracy_decimals: 1

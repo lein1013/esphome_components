@@ -1,3 +1,12 @@
+
+# Fork Notes
+This is a fork of https://github.com/jplitza/esphome_components to adapt for the AS 1440. Work in progress! Current development modifications are done locally in the esphome/components folder.
+
+The following sections are like in the original repository. 
+
+
+
+
 # Components for ESPHome
 
 These are the custom-made components that I use for [ESPHome].
