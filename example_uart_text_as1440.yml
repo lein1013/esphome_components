@@ -1,0 +1,54 @@
+external_components:
+  - source: github://jplitza/esphome_components
+
+logger:
+  baud_rate: 0
+
+uart:
+  id: uart_bus
+  rx_pin: RX # orig: GPIO3 (used a wemos d1 mini)
+  tx_pin: TX # not used
+  baud_rate: 300
+  data_bits: 7
+  parity: EVEN #ODD
+
+# obis:
+#   uart_id: uart_bus
+  # force_update:  # optional
+  # interval: 300 #2 min
+  # payload: "\x2F\x3F\x21\x0D\x0A"  # /?!<CR><LF>
+
+# https://esphome.io/components/binary_sensor/gpio.html
+binary_sensor:
+  - platform: status
+    name: "${upper_devicename} Status"
+    
+switch:
+# Simple switch that restarts the ESP32
+  - platform: restart # OK
+    name: "${upper_devicename} Restart"
+  - platform: uart  # https://esphome.io/components/switch/uart.html?highlight=uart
+    name: "powermeter UART Recurring Output"
+    data: [0x2F, 0x3F, 0x21, 0x0D, 0x0A]
+  # - platform: uart # optional - not tested yet
+  #   name: "UART Recurring Output"
+  #   data: [0x2F, 0x3F, 0x21, 0x0D, 0x0A]
+  #   send_every: 60s 
+
+  # one send response round trip: 
+    # [15:37:24][D][text_sensor:067]: 'powermeter_uart': Sending state '/ABB5\@V9.21         '
+    # [15:38:15][D][text_sensor:067]: 'powermeter_uart': Sending state '!'
+    #  49 sec  
+text_sensor:
+  - platform: custom
+    lambda: |-
+      auto my_custom_sensor = new UartReadLineSensor(id(uart_bus));
+      App.register_component(my_custom_sensor);
+      return {my_custom_sensor};
+    text_sensors:
+      id: "powermeter_uart"
+      name: "powermeter_uart"
+      # What happens when a tag is read
+      on_value:
+        then:
+        - homeassistant.tag_scanned: !lambda 'return x;'
